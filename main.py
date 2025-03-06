@@ -65,8 +65,17 @@ print(f"90% Confidence Interval: {confidence_interval}")
 #Calculate rate of return based on simulation output
 simulated_returns = (price_paths[-1] - price_paths[0]) / price_paths[0]
 print (simulated_returns)
+
+#Step 5:Analysis - VaR, ES
 # Calculate VaR under 95% confidence level
 confidence_level = 0.995
-VaR_monte_carlo = -np.percentile(simulated_returns, 100 * (confidence_level))
+VaR= -np.percentile(simulated_returns, 100 * (1-confidence_level))
 
-print(f"Monte Carlo VaR (95% confidence): {VaR_monte_carlo:.4f}")
+print(f"Monte Carlo VaR (99.5% confidence): {VaR:.4f}")
+
+#Calculate Expected Shortfall
+losses_beyond_VaR = simulated_returns[simulated_returns < -VaR]
+print(losses_beyond_VaR)
+ES = -np.mean(losses_beyond_VaR)
+
+print (f"Expected Shortfall:{ES:.4f}")
